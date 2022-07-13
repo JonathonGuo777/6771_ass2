@@ -93,13 +93,13 @@ namespace comp6771 {
 
 	double euclidean_vector::at(int index) const {
 		if (index < 0 || index >= this->dimensions()) {
-			throw euclidean_vector_error("Index" + std::to_string(index) + " is not valid for this euclidean_vector object");
+			throw euclidean_vector_error("Index " + std::to_string(index) + " is not valid for this euclidean_vector object");
 		}
 		return this->magnitudes_[index];
 	}
 	double& euclidean_vector::at(int index) {
 		if (index < 0 || index >= this->dimensions()) {
-			throw euclidean_vector_error("Index" + std::to_string(index) + " is not valid for this euclidean_vector object");
+			throw euclidean_vector_error("Index " + std::to_string(index) + " is not valid for this euclidean_vector object");
 		}
 		return this->magnitudes_[index];
 	}
