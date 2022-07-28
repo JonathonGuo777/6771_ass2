@@ -17,19 +17,19 @@ namespace comp6771 {
 	euclidean_vector::euclidean_vector(int dim) noexcept {
 		this->ev_dim = dim;
 //		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(dim));
-		this->magnitudes_ = std::make_unique<double[]>(dim); // another approach
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(dim)); // another approach
 		for (auto i = 0; i < dim; ++i) {
 //			magnitudes_[static_cast<size_t>(i)] = 0;
-			magnitudes_[i] = 0;
+			magnitudes_[static_cast<size_t>(i)] = 0;
 		}
 	}
 	euclidean_vector::euclidean_vector(int dim, double mag) noexcept {
 		this->ev_dim = dim;
 //		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(dim));
-		this->magnitudes_ = std::make_unique<double[]>(dim);// another approach
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(dim));// another approach
 		for (auto i = 0; i < dim; i++) {
 //			this->magnitudes_[static_cast<size_t>(i)] = mag;
-			this->magnitudes_[i] = mag;
+			this->magnitudes_[static_cast<size_t>(i)] = mag;
 		}
 	}
 	euclidean_vector::euclidean_vector(std::vector<double>::const_iterator begin,
@@ -42,19 +42,19 @@ namespace comp6771 {
 		}
 		this->ev_dim = counter1;
 
-		this->magnitudes_ = std::make_unique<double[]>(this->ev_dim);
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(this->ev_dim));
 		auto counter2 = 0;
 		auto temp2 = begin;
 		while (temp2 != end)
 		{
-			this->magnitudes_[counter2] = *temp2;
+			this->magnitudes_[static_cast<size_t>(counter2)] = *temp2;
 			++counter2;
 			++temp2;
 		}
 	}
 
 	euclidean_vector::euclidean_vector(std::initializer_list<double> input_list) noexcept {
-		this->magnitudes_ = std::make_unique<double[]>(input_list.size());
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(input_list.size()));
 		auto counter = 0;
 		for (auto temp : input_list) {
 			magnitudes_[static_cast<size_t>(counter)] = temp;
@@ -64,9 +64,9 @@ namespace comp6771 {
 	}
 	euclidean_vector::euclidean_vector(const euclidean_vector& source) noexcept {
 		this->ev_dim = source.ev_dim;
-		this->magnitudes_ = std::make_unique<double[]>(source.ev_dim);
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(source.ev_dim));
 		for (int i = 0; i < source.ev_dim; ++i) {
-			this->magnitudes_[i] = source.magnitudes_[i];
+			this->magnitudes_[static_cast<size_t>(i)] = source.magnitudes_[static_cast<size_t>(i)];
 		}
 	}
 	euclidean_vector::euclidean_vector(euclidean_vector&& source) noexcept {
@@ -87,7 +87,7 @@ namespace comp6771 {
 		return this->ev_dim;
 	}
 	double euclidean_vector::get_magnitudes(int i) const noexcept {
-		auto temp = this->magnitudes_[i];
+		auto temp = this->magnitudes_[static_cast<size_t>(i)];
 		return temp;
 	}
 
@@ -95,21 +95,21 @@ namespace comp6771 {
 		if (index < 0 || index >= this->dimensions()) {
 			throw euclidean_vector_error("Index " + std::to_string(index) + " is not valid for this euclidean_vector object");
 		}
-		return this->magnitudes_[index];
+		return this->magnitudes_[static_cast<size_t>(index)];
 	}
 	double& euclidean_vector::at(int index) {
 		if (index < 0 || index >= this->dimensions()) {
 			throw euclidean_vector_error("Index " + std::to_string(index) + " is not valid for this euclidean_vector object");
 		}
-		return this->magnitudes_[index];
+		return this->magnitudes_[static_cast<size_t>(index)];
 	}
 
 	// operator
 	euclidean_vector& euclidean_vector::operator=(const euclidean_vector& source) noexcept { // copy assignment
 		this->ev_dim = source.ev_dim;
-		this->magnitudes_ = std::make_unique<double[]>(source.ev_dim);
+		this->magnitudes_ = std::make_unique<double[]>(static_cast<size_t>(source.ev_dim));
 		for (int i = 0; i < source.ev_dim; ++i)
-			this->magnitudes_[i] = source.magnitudes_[i];
+			this->magnitudes_[static_cast<size_t>(i)] = source.magnitudes_[static_cast<size_t>(i)];
 		return *this;
 	}
 	euclidean_vector& euclidean_vector::operator=(euclidean_vector&& source) noexcept { // move assignment
@@ -119,18 +119,18 @@ namespace comp6771 {
 	}
 	double& euclidean_vector::operator[](int index) noexcept {
 		assert(index >= 0 && index < this->dimensions());
-		return this->magnitudes_[index];
+		return this->magnitudes_[static_cast<size_t>(index)];
 	}
 	double euclidean_vector::operator[](int index) const noexcept {
 		assert(index >= 0 && index < this->dimensions());
-		return this->magnitudes_[index];
+		return this->magnitudes_[static_cast<size_t>(index)];
 	}
 
 	euclidean_vector euclidean_vector::operator+() noexcept {
 		// copy of this euclidean_vector object
 		auto result = euclidean_vector(this->dimensions());
 		for (int i = 0; i < this->dimensions(); ++i) {
-			result.magnitudes_[i] = this->magnitudes_[i];
+			result.magnitudes_[static_cast<size_t>(i)] = this->magnitudes_[static_cast<size_t>(i)];
 		}
 		return result;
 	}
@@ -139,7 +139,7 @@ namespace comp6771 {
 		// Returns a copy of the current object, where each scalar value has its sign negated
 		auto result = euclidean_vector(this->dimensions());
 		for (int i = 0; i < this->dimensions(); ++i) {
-			result.magnitudes_[i] = -this->magnitudes_[i];
+			result.magnitudes_[static_cast<size_t>(i)] = -this->magnitudes_[static_cast<size_t>(i)];
 		}
 		return result;
 	}
@@ -152,7 +152,7 @@ namespace comp6771 {
 		}
 		for (int i = 0; i < source.dimensions(); ++i)
 		{
-			this->magnitudes_[i] += source.magnitudes_[i];
+			this->magnitudes_[static_cast<size_t>(i)] += source.magnitudes_[static_cast<size_t>(i)];
 		}
 		return *this;
 	}
@@ -165,7 +165,7 @@ namespace comp6771 {
 		}
 		for (int i = 0; i < source.dimensions(); ++i)
 		{
-			this->magnitudes_[i] -= source.magnitudes_[i];
+			this->magnitudes_[static_cast<size_t>(i)] -= source.magnitudes_[static_cast<size_t>(i)];
 		}
 		return *this;
 	}
@@ -173,7 +173,7 @@ namespace comp6771 {
 	euclidean_vector& euclidean_vector::operator*=(double scalar) noexcept {
 		for (int i = 0; i < this->dimensions(); ++i)
 		{
-			this->magnitudes_[i] *= scalar;
+			this->magnitudes_[static_cast<size_t>(i)] *= scalar;
 		}
 		return *this;
 	}
@@ -185,7 +185,7 @@ namespace comp6771 {
 		}
 		for (int i = 0; i < this->dimensions(); ++i)
 		{
-			this->magnitudes_[i] /= scalar;
+			this->magnitudes_[static_cast<size_t>(i)] /= scalar;
 		}
 		return *this;
 	}
@@ -194,7 +194,7 @@ namespace comp6771 {
 		auto result = std::vector<double>();
 		result.reserve(this->dimensions());
 		for (int i = 0; i < this->dimensions(); ++i) {
-			result.push_back(this->magnitudes_[i]);
+			result.push_back(this->magnitudes_[static_cast<size_t>(i)]);
 		}
 		return result;
 	}
@@ -202,7 +202,7 @@ namespace comp6771 {
 		auto result = std::list<double>();
 		for (int i = 0; i < this->dimensions(); ++i)
 		{
-			result.push_back(this->magnitudes_[i]);
+			result.push_back(this->magnitudes_[static_cast<size_t>(i)]);
 		}
 		return result;
 	}
@@ -212,7 +212,7 @@ namespace comp6771 {
 		if (ev_a.dimensions() != ev_b.dimensions()) return false;
 		for (int i = 0; i < ev_a.dimensions(); ++i)
 		{
-			if (ev_a.magnitudes_[i] != ev_b.magnitudes_[i]) return false;
+			if (ev_a.magnitudes_[static_cast<size_t>(i)] != ev_b.magnitudes_[static_cast<size_t>(i)]) return false;
 		}
 		return true;
 	}
@@ -220,7 +220,7 @@ namespace comp6771 {
 		if (ev_a.dimensions() != ev_b.dimensions()) return true;
 		for (int i = 0; i < ev_a.dimensions(); ++i)
 		{
-			if (ev_a.magnitudes_[i] != ev_b.magnitudes_[i]) return true;
+			if (ev_a.magnitudes_[static_cast<size_t>(i)] != ev_b.magnitudes_[static_cast<size_t>(i)]) return true;
 		}
 		return false;
 	}
@@ -262,7 +262,7 @@ namespace comp6771 {
 	std::ostream& operator<<(std::ostream& os, const euclidean_vector& ev_a) noexcept {
 		os << '[';
 		for (int i = 0; i < ev_a.dimensions(); ++i) {
-			os << ev_a.magnitudes_[i];
+			os << ev_a.magnitudes_[static_cast<size_t>(i)];
 			if (i != (ev_a.dimensions() - 1)) {
 				os << ' ';
 			}
